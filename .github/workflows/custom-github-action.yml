@@ -1,0 +1,14 @@
+name: custom github action test
+
+on: [push]
+  
+jobs: 
+  custom-action:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: chechout repo
+        uses: actions/checkout@v4
+
+      - uses: disruptiq/first-action-publish-test@v1
+        with:
+          name: "Ronald"
