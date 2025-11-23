@@ -1,0 +1,52 @@
+
+name: Advanced Pipeline
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Step 1 — Print greeting
+        run: echo "Starting a more complex workflow!"
+
+      - name: Step 2 — Simulate build
+        run: |
+          echo "Compiling project..."
+          mkdir build
+          echo "This is a fake build artifact" > build/output.txt
+          echo "Build step complete!"
+
+      - name: Step 3 — Run tests
+        run: |
+          echo "Running fake tests..."
+          echo "Test #1 passed"
+          echo "Test #2 passed"
+
+      - name: Step 4 — Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: build/output.txt
+
+  deploy:
+    needs: build     # THIS is the complex part!
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact from previous job
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Show artifact contents
+        run: |
+          echo "Showing artifact we downloaded:"
+          cat output.txt
+
+      - name: Simulate deployment
+        run: echo "Pretending to deploy..."
